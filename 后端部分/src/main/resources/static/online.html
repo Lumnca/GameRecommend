@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="pixi.js"></script>
+</head>
+<body>
+
+</body>
+<script>
+    const app = new PIXI.Application({ backgroundColor: 0x1099bb ,width:document.body.clientWidth,height:800});
+    document.body.appendChild(app.view);
+
+
+    var sr = new PIXI.Sprite();
+    sr.x = Math.random()*1000;
+    sr.y = Math.random()*700;
+    var name;//用户名称
+    var id;//用户唯一id
+    var allPlayers = [];//所有玩家
+
+    app.stage.interactive = true;
+    app.stage.hitArea = app.renderer.screen;
+    app.stage.addListener('click', (e) => {
+        console.log(e.data.global)
+        move(e.data.global);
+    });
+
+    /*
+    *生成所有对象
+    * */
+    function generatePlayers(players){
+        allPlayers = [];
+       app.stage.removeChildren();
+       players.forEach((p)=>{
+           let psc = new PIXI.Sprite.from("bunny.png");
+           psc.x = p.x;
+           psc.y = p.y;
+           if(p.name === name){
+               psc.tint = 0xff0000;
+               id = p.id;
+               sr = psc;
+           }
+           allPlayers.push(psc);
+           app.stage.addChild(psc);
+       })
+    }
+
+    /**
+     * 更新一个位置
+     */
+    function updatePlayersPosition(players){
+        let s = allPlayers[players.id];
+        s.update = function () {
+            if(Math.abs(s.x - players.x) >= 1){
+                s.x += Math.sign(players.x - s.x);
+            }
+            else if(Math.abs(s.y - players.y)>=1){
+                s.y += Math.sign(players.y - s.y);
+            }
+            else{
+
+            }
+        }
+    }
+
+
+    window.onload = connect();
+    /**
+     * 连接
+     */
+
+    function connect() {
+        name = prompt();
+        var  socket = new SockJS("/online");
+        stompClient = Stomp.over(socket);
+        stompClient.connect({},function (frame) {
+            stompClient.subscribe("/topic/new_add",function (greeting) {
+                generatePlayers(JSON.parse(greeting.body))
+        });
+            stompClient.subscribe("/topic/move",function (greeting) {
+                updatePlayersPosition(JSON.parse(greeting.body))
+            });
+
+            stompClient.send("/app/into",{},JSON.stringify({
+                'x' : sr.x,
+                'y' :sr.y,
+                'name':name,
+                'id':id
+            }));
+        });
+    }
+
+    /**
+     * 移动
+     */
+    function move(sr) {
+        stompClient.send("/app/move",{},JSON.stringify({
+            'id':id,
+            'name':name,
+            'x' : sr.x,
+            'y' :sr.y,
+        }));
+    }
+
+    app.ticker.add(()=>{
+        update(app.stage);
+    })
+
+    function update(obj){
+        if(obj.update){
+            obj.update();
+        }
+        if(obj.children instanceof  Array){
+            obj.children.forEach(o=>{
+                update(o);
+            })
+        }
+        else{
+            return;
+        }
+    }
+
+</script>
+
+
+</html>

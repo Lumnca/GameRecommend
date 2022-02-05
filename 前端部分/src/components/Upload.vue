@@ -42,19 +42,34 @@
         <el-form-item label="标题图片">
           <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="http://127.0.0.1:8868/uploadimg"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :on-success="handleSuccess"
             :file-list="fileList"
             :limit="1"
+            name="upload"
             list-type="picture"
           >
             <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件</div>
           </el-upload>
         </el-form-item>
-
+        <el-form-item label="游戏截图">
+          <el-upload
+            class="upload-demo"
+            action="http://127.0.0.1:8868/uploadimg"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove2"
+            :on-success="handleSuccess2"
+            :file-list="gFs"
+            name="upload"
+            list-type="picture"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件</div>
+          </el-upload>
+        </el-form-item>
         <el-form-item label="游戏介绍">
           <div id="div1"></div>-
         </el-form-item>
@@ -86,25 +101,29 @@ export default {
         size: 0
       },
       editor: null,
-      fileList: []
+      fileList: [],
+      filename: "",
+      gFs:[],
+      imgs:[]
     };
   },
   methods: {
     onSubmit() {
-      console.log(this.form.type);
+     
       axios
         .post(HOST + "/addGame", {
           name: this.form.name,
           devType: this.form.region,
           id: 9999,
           state: 0,
-          imgUrl: this.fileList[0].name,
+          imgUrl: this.filename,
           size: this.form.size,
           info: this.editor.txt.html(),
           date: new Date(),
           good: 0,
           href: this.form.href,
-          label: JSON.stringify(this.form.type)
+          label: JSON.stringify(this.form.type),
+          imgs : JSON.stringify(this.imgs)
         })
         .then(res => {
           console.log(res.data);
@@ -117,9 +136,18 @@ export default {
     handlePreview(file) {
       console.log(file);
     },
-    handleSuccess(id, file) {
+    handleSuccess(res, file) {
       this.fileList.push(file);
-      console.log(file);
+      this.filename = res.msg;
+    },
+    handleRemove2(file, fileList) {
+      console.log(file, fileList);
+    },
+    handleSuccess2(res, file) {
+      file.name = res.msg;
+      this.gFs.push(file);
+      this.imgs.push(res.msg);
+      console.log(this.gFs);
     }
   },
   mounted() {

@@ -56,20 +56,24 @@
         <div>
           <el-row>
             <el-col :span="6" v-for="(o) in games" :key="o">
-              <el-card  class="game-item" @click="itemClick(o)">
-                <img src="src/assets/logo.png" width="360" height="240" />
-                <div>
-                  <strong>{{o.name}}{{devType[o.devType]}}</strong>
+              <el-card class="game-item" @click="itemClick(o)">
+               <div>
+                  <img :src="o.imgUrl" width="360" height="240" />
+               </div>
+                <div >
+                  <div>
+                    <strong>{{o.name}}{{devType[o.devType]}}</strong>
+                  </div>
+                  <div></div>
+                  <el-row :gutter="20">
+                    <el-col
+                      :span="8"
+                      style="color:#409EFF"
+                    >大小: {{o.size>1000? Math.floor(o.size/1000) + 'G':o.size + 'M'}}</el-col>
+                    <el-col :span="8"></el-col>
+                    <el-col :span="8" style="color:#909399">{{dateTranslate(o.date)}}</el-col>
+                  </el-row>
                 </div>
-                <div></div>
-                <el-row :gutter="20">
-                  <el-col
-                    :span="8"
-                    style="color:#409EFF"
-                  >大小: {{o.size>1000? Math.floor(o.size/1000) + 'G':o.size + 'M'}}</el-col>
-                  <el-col :span="8"></el-col>
-                  <el-col :span="8" style="color:#909399">{{dateTranslate(o.date)}}</el-col>
-                </el-row>
               </el-card>
             </el-col>
           </el-row>
@@ -112,8 +116,9 @@
               <div>
                 <h2>
                   {{game.name}}
-                 <span v-for="el in JSON.parse(game.label)" :key="el"> <el-tag>{{el}}</el-tag>&nbsp;</span>
-               
+                  <span v-for="el in JSON.parse(game.label)" :key="el">
+                    <el-tag>{{el}}</el-tag>&nbsp;
+                  </span>
                 </h2>
                 <span>Lumnca {{dateTranslate(game.date)}}</span>
               </div>
@@ -125,10 +130,10 @@
                 </el-tab-pane>
                 <el-tab-pane label="游戏截图" name="second">
                   <el-carousel height="600px">
-                    <el-carousel-item v-for="item in 4" :key="item">
+                    <el-carousel-item v-for="item in JSON.parse(game.imgs)" :key="item">
                       <div style="padding:8px;">
-                        <img src="src/assets/icons/game.svg" />
-                        <strong>98551333</strong>
+                        <img :src="item" />
+                    
                       </div>
                     </el-carousel-item>
                   </el-carousel>
@@ -154,7 +159,7 @@
                 <strong>上传日期:</strong>
                 {{dateTranslate(game.date)}}
               </div>
-               <div>
+              <div>
                 <strong>游戏链接:</strong>
                 {{game.href==null? '无':game.href}}
               </div>
@@ -179,7 +184,7 @@ h2 {
   padding: 16px 0px;
 }
 .game-item {
-  margin: 20px;
+  margin: 12px;
 }
 .game-item:hover {
   cursor: pointer;
@@ -263,13 +268,10 @@ export default {
     axios
       .get(HOST + "/getGames")
       .then(res => {
-       
         this.games = res.data;
-         console.log(this.games);
+        console.log(this.games);
       })
-      .catch(() => {
-       
-      });
+      .catch(() => {});
   },
   methods: {
     dSort() {
@@ -307,9 +309,9 @@ export default {
       this.game = item;
       console.log(item);
     },
-    dateTranslate(date){
+    dateTranslate(date) {
       let d = new Date(date);
-      return d.getFullYear()+"/"+(d.getMonth()+1)+"/"+d.getDate();
+      return d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate();
     }
   }
 };

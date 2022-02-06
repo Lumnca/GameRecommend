@@ -24,10 +24,16 @@
                 <b>数据统计</b>
                 <br />
                 <div class="text item">
-                  <div><strong>访问数量: </strong>{{webData.gameNumber}}</div>
+                  <div>
+                    <strong>访问数量:</strong>
+                  {{webData.visitorNumber}}
+                  </div>
                 </div>
                 <div class="text item">
-                  <div><strong>游戏数量: </strong>{{webData.visitorNumber}}</div>
+                  <div>
+                    <strong>游戏数量:</strong>
+                      {{webData.gameNumber}}
+                  </div>
                 </div>
               </div>
             </el-card>
@@ -42,8 +48,11 @@
       <Upload></Upload>
     </div>
     <div v-else-if="type==='talk'">
-      <el-card> 此功能暂未开放！ </el-card>
-      </div>
+      <el-card>此功能暂未开放！</el-card>
+    </div>
+    <div v-else-if="type==='manger'">
+     <Table></Table>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -61,6 +70,7 @@ h2 {
 <script>
 import Games from "./Games.vue";
 import Upload from "./Upload.vue";
+import  Table from "./Table.vue";
 export default {
   name: "Content",
   props: {
@@ -68,7 +78,8 @@ export default {
   },
   components: {
     Games,
-    Upload
+    Upload,
+    Table
   },
   data() {
     return {

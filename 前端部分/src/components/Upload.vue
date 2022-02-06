@@ -23,52 +23,28 @@
         <el-form-item label="游戏大小">
           <el-input-number v-model="form.size" controls-position="right" :min="1" :max="99999"></el-input-number>&nbsp;MB
         </el-form-item>
-        <el-form-item label="游戏标签">
+        <el-form-item label="游戏分类">
           <el-checkbox-group v-model="form.type">
-            <el-checkbox label="策略" name="type"></el-checkbox>
+            <el-checkbox label="RPG" name="type"></el-checkbox>
             <el-checkbox label="SLG" name="type"></el-checkbox>
-            <el-checkbox label="热血" name="type"></el-checkbox>
-            <el-checkbox label="冒险" name="type"></el-checkbox>
-            <el-checkbox label="R18" name="type"></el-checkbox>
-            <el-checkbox label="3D" name="type"></el-checkbox>
-            <el-checkbox label="回合" name="type"></el-checkbox>
-            <el-checkbox label="塔防" name="type"></el-checkbox>
-            <el-checkbox label="角色扮演" name="type"></el-checkbox>
+            <el-checkbox label="ACT" name="type"></el-checkbox>
+            <el-checkbox label="AVG" name="type"></el-checkbox>
+            <el-checkbox label="AAG" name="type"></el-checkbox>
+            <el-checkbox label="SRPG" name="type"></el-checkbox>
+            <el-checkbox label="RTS" name="type"></el-checkbox>
+            <el-checkbox label="FTG" name="type"></el-checkbox>
+            <el-checkbox label="STG" name="type"></el-checkbox>
             <el-checkbox label="FPS" name="type"></el-checkbox>
-            <el-checkbox label="休闲" name="type"></el-checkbox>
-            <el-checkbox label="益智" name="type"></el-checkbox>
+            <el-checkbox label="TPS" name="type"></el-checkbox>
+            <el-checkbox label="PZL" name="type"></el-checkbox>
+            <el-checkbox label="CAG" name="type"></el-checkbox>      
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="标题图片">
-          <el-upload
-            class="upload-demo"
-            action="http://127.0.0.1:8868/uploadimg"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :on-success="handleSuccess"
-            :file-list="fileList"
-            :limit="1"
-            name="upload"
-            list-type="picture"
-          >
-            <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件</div>
-          </el-upload>
+          <FileUpload ref="f1" :type="1" :limit="1" :size="3"></FileUpload>
         </el-form-item>
         <el-form-item label="游戏截图">
-          <el-upload
-            class="upload-demo"
-            action="http://127.0.0.1:8868/uploadimg"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove2"
-            :on-success="handleSuccess2"
-            :file-list="gFs"
-            name="upload"
-            list-type="picture"
-          >
-            <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件</div>
-          </el-upload>
+          <FileUpload ref="f2" :type="2" :limit="6" :size="3"></FileUpload>
         </el-form-item>
         <el-form-item label="游戏介绍">
           <div id="div1"></div>-
@@ -84,9 +60,12 @@
 
 <script>
 import E from "wangeditor";
-
+import FileUpload from "./tools/FileUpload.vue";
 export default {
   name: "Upload",
+  components: {
+    FileUpload
+  },
   data() {
     return {
       form: {
@@ -103,30 +82,32 @@ export default {
       editor: null,
       fileList: [],
       filename: "",
-      gFs:[],
-      imgs:[]
+      gFs: [],
+      imgs: []
     };
   },
   methods: {
     onSubmit() {
-     
       axios
         .post(HOST + "/addGame", {
           name: this.form.name,
           devType: this.form.region,
           id: 9999,
           state: 0,
-          imgUrl: this.filename,
+          imgUrl: this.$refs.f1.filename,
           size: this.form.size,
           info: this.editor.txt.html(),
           date: new Date(),
           good: 0,
           href: this.form.href,
           label: JSON.stringify(this.form.type),
-          imgs : JSON.stringify(this.imgs)
+          imgs: JSON.stringify(this.$refs.f2.imgs)
         })
         .then(res => {
-          console.log(res.data);
+          this.$message(res.data.msg);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         })
         .catch(() => {});
     },

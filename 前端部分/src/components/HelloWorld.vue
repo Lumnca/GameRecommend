@@ -64,7 +64,8 @@ export default {
         { name: "--主 页", icon: "src/assets/icons/index.svg", size: 32, index: "1",type:'home' },
         { name: "--游 戏", icon: "src/assets/icons/game.svg", size: 32, index: "2",type:'game' },
         { name: "--留 言", icon: "src/assets/icons/talk.svg", size: 32, index: "3",type:'talk' },
-        { name: "--上 传", icon: "src/assets/icons/upload.svg", size: 32, index: "4",type:'upload' }
+        { name: "--上 传", icon: "src/assets/icons/upload.svg", size: 32, index: "4",type:'upload' },
+        { name: "--管 理", icon: "src/assets/icons/manger.svg", size: 32, index: "5",type:'manger' }
       ],
       type:'home'
     };
@@ -72,7 +73,6 @@ export default {
   methods: {
     navItemClick(item) {
       this.type = item.type;
-      console.log(item);
     }
   }
 };

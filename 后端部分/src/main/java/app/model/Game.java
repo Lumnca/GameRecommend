@@ -13,6 +13,15 @@ public class Game {
     private String info;
     private String href;
     private String label;
+    private String imgs;
+
+    public String getImgs() {
+        return imgs;
+    }
+
+    public void setImgs(String imgs) {
+        this.imgs = imgs;
+    }
 
     public String getLabel() {
         return label;

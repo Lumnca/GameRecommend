@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        @import url("https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css");
+
+    </style>
+</head>
+<body>
+<script src="https://unpkg.com/vue@2.6.14/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui@2.15.7/lib/index.js"></script>
+<div id="app">
+
+        <el-table
+                :data="tableData"
+                border
+                style="width: 100%">
+            <el-table-column
+                    prop="id"
+                    label="编号"
+                    width="60">
+            </el-table-column>
+            <el-table-column
+                    fixed
+                    prop="date"
+                    label="日期"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="fileaddr"
+                    label="链接">
+            </el-table-column>
+            <el-table-column
+                    prop="size"
+                    label="大小/byte">
+            </el-table-column>
+            <el-table-column
+                    prop="type"
+                    label="类型">
+            </el-table-column>
+            <el-table-column
+                    fixed="right"
+                    label="操作"
+                    width="100">
+                <template slot-scope="scope">
+                    <el-button @click="handleClick(scope.row)" type="danger" size="small">删除</el-button>
+                    <el-button type="text" size="small">编辑</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+</div>
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+    var app = new Vue({
+        el:'#app',
+        methods: {
+            handleClick(row) {
+                row.fileaddr = row.fileaddr.split('group1/')[1];
+                console.log( row.fileaddr);
+                axios.post('http://127.0.0.1:8868/delFile',row)
+                    .then(function (response) {
+                        app.$message(response.data.msg);
+                        //window.location.reload()
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+        },
+
+        data() {
+            return {
+                tableData: []
+            }
+        },
+    })
+    axios.get('http://127.0.0.1:8868/getAllFiles')
+        .then(function (response) {
+            app.tableData = response.data;
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+</script>
+</html>

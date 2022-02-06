@@ -57,10 +57,10 @@
           <el-row>
             <el-col :span="6" v-for="(o) in games" :key="o">
               <el-card class="game-item" @click="itemClick(o)">
-               <div>
+                <div>
                   <img :src="o.imgUrl" width="360" height="240" />
-               </div>
-                <div >
+                </div>
+                <div>
                   <div>
                     <strong>{{o.name}}{{devType[o.devType]}}</strong>
                   </div>
@@ -123,17 +123,22 @@
                 <span>Lumnca {{dateTranslate(game.date)}}</span>
               </div>
               <el-divider></el-divider>
-              <img src="src/assets/logo.png" width="480" height="320" />
+              <img :src="game.imgUrl" width="480" height="320" />
               <el-tabs v-model="activeName">
                 <el-tab-pane label="游戏介绍" name="first">
                   <div v-html="game.info"></div>
                 </el-tab-pane>
                 <el-tab-pane label="游戏截图" name="second">
-                  <el-carousel height="600px">
+                  <el-carousel height="640px">
                     <el-carousel-item v-for="item in JSON.parse(game.imgs)" :key="item">
                       <div style="padding:8px;">
-                        <img :src="item" />
-                    
+                        <div class="demo-image__preview">
+                          <el-image
+                            style="width: 1080px; height: 640px"
+                            :src="item"
+                            :preview-src-list="srcList"
+                          ></el-image>
+                        </div>
                       </div>
                     </el-carousel-item>
                   </el-carousel>

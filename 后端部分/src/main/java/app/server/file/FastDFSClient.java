@@ -27,16 +27,8 @@ public class FastDFSClient {
 	 * @throws Exception
 	 */
 	public FastDFSClient() throws Exception {
-
-		String conf = System.getProperty("user.dir"); //this.getClass().getResource("/fdfs_client.properties").getPath();
-		System.out.println(conf);
-		if (conf.contains("classpath:")) {
-			String path = URLDecoder.decode(getClass().getProtectionDomain().getCodeSource().getLocation().toString(),
-					"UTF-8");
-			path = path.substring(6);
-			conf = conf.replace("classpath:", URLDecoder.decode(path, "UTF-8"));
-		}
-		ClientGlobal.init(conf);
+		String trackerServers = "47.106.254.86:22122";
+		ClientGlobal.initByTrackers(trackerServers);
 		trackerClient = new TrackerClient();
 		trackerServer = trackerClient.getConnection();
 		storageServer = null;

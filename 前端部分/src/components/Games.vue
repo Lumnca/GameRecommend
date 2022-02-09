@@ -53,25 +53,30 @@
         </el-row>
 
         <hr />
-        <div>
+        <div class="gs">
           <el-row>
             <el-col :span="6" v-for="(o) in games" :key="o">
               <el-card class="game-item" @click="itemClick(o)">
                 <div>
-                  <img :src="o.imgUrl" width="360" height="240" />
+                  <img :src="o.imgUrl" />
                 </div>
-                <div>
+                <div style="padding:12px;">
                   <div>
                     <strong>{{o.name}}{{devType[o.devType]}}</strong>
                   </div>
-                  <div></div>
+                  <div style="margin-top:4px;margin-bottom:4px;"  class="glabel">
+                    <span v-for="ic in JSON.parse(o.label)"  :key="ic">
+                       <el-tag size="small" >{{ic}}</el-tag>
+                    </span>
+                    
+                  </div>
                   <el-row :gutter="20">
                     <el-col
                       :span="8"
-                      style="color:#409EFF"
-                    >大小: {{o.size>1000? Math.floor(o.size/1000) + 'G':o.size + 'M'}}</el-col>
+                      style="color:#330033"
+                    >大小: {{o.size>1000? Math.floor(o.size/1000) + 'G':o.size + 'M'}} </el-col>
                     <el-col :span="8"></el-col>
-                    <el-col :span="8" style="color:#909399">{{dateTranslate(o.date)}}</el-col>
+                    <el-col :span="8" style="color:#909399;text-algin:right;">{{dateTranslate(o.date)}} </el-col>
                   </el-row>
                 </div>
               </el-card>
@@ -182,6 +187,9 @@
   </div>
 </template>
 <style scoped>
+.gs .el-card {
+    --el-card-padding: 0px !important;
+}
 h2 {
   color: #78b0dd;
 }
@@ -190,6 +198,14 @@ h2 {
 }
 .game-item {
   margin: 12px;
+  font-size: 14px;
+}
+.glabel :not(:first-child){
+  margin-left: 4px;
+}
+.game-item   img{
+  width: 100%;
+  height: 240px;
 }
 .game-item:hover {
   cursor: pointer;

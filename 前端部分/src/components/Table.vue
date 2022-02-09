@@ -64,6 +64,10 @@
               <el-checkbox label="TPS" name="type"></el-checkbox>
               <el-checkbox label="PZL" name="type"></el-checkbox>
               <el-checkbox label="CAG" name="type"></el-checkbox>
+                          <div>
+              <el-checkbox label="R18" name="type"></el-checkbox>
+              <el-checkbox label="3D" name="type"></el-checkbox>
+            </div>
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="标题图片">

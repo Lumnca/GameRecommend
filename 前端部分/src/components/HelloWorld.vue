@@ -2,7 +2,7 @@
   <div>
     <el-container style="height: 900px; border: 1px solid #eee;">
       <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-        <el-menu>
+        <el-menu >
           <el-menu-item
             v-for="item in navs"
             :key="item.index"

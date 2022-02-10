@@ -65,4 +65,13 @@ public class GamesApi {
         }
         return new Response(200,conf);
     }
+    @PostMapping("/addGood/{id}")
+    public Response addGood(@PathVariable("id")Integer id){
+        if(gamesDao.addGood(id)>0){
+            return new Response(200,"success!");
+        }
+        else{
+            return new Response(500,"error!");
+        }
+    }
 }

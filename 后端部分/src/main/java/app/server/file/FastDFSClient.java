@@ -27,7 +27,7 @@ public class FastDFSClient {
 	 * @throws Exception
 	 */
 	public FastDFSClient() throws Exception {
-		String trackerServers = "47.106.254.86:22122";
+		String trackerServers = "117.50.175.19:22122";
 		ClientGlobal.initByTrackers(trackerServers);
 		trackerClient = new TrackerClient();
 		trackerServer = trackerClient.getConnection();

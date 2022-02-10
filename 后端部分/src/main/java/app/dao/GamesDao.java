@@ -21,4 +21,7 @@ public interface GamesDao {
             "`good` = #{good}, `imgUrl` = #{imgUrl}, `info` = #{info}, `state` = #{state}, `href` = #{href}, " +
             "`imgs` = #{imgs},`label` = #{label} WHERE (`id` = #{id})")
     int updateGame(Game game);
+
+    @Update("UPDATE games SET good = good+1 WHERE (`id` =  #{id})")
+    int addGood(Integer id);
 }

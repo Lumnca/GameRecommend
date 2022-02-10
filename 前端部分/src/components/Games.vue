@@ -125,7 +125,11 @@
                     <el-tag>{{el}}</el-tag>&nbsp;
                   </span>
                 </h2>
-                <span>Lumnca {{dateTranslate(game.date)}}</span>
+                <span>上传者: Lumnca    <el-divider direction="vertical"></el-divider>
+                 {{dateTranslate(game.date)}} 
+                    <el-divider direction="vertical"></el-divider><el-button type="text" @click="goodAdd()"> <i class="el-icon-star-off"></i></el-button>
+                    ({{game.good}})</span>
+
               </div>
               <el-divider></el-divider>
               <img :src="game.imgUrl" width="480" height="320" />
@@ -333,6 +337,25 @@ export default {
     dateTranslate(date) {
       let d = new Date(date);
       return d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate();
+    },
+    goodAdd(){
+      this.game.good+=1;
+      if(window.localStorage.getItem('#'+this.game.id)==new Date().getDate()){
+        this.$message('今日该游戏已经点赞了！');
+      }
+      else{
+      axios.post(HOST + "/addGood/"+this.game.id)
+      .then(res => {
+        console.log(res.data);
+          this.$message({
+            message: '点赞成功！',
+            type: 'success'
+        });
+      })
+      .catch(() => {});
+      
+        window.localStorage.setItem('#'+this.game.id,new Date().getDate())
+      }
     }
   }
 };

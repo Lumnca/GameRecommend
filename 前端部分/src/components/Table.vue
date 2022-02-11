@@ -64,10 +64,11 @@
               <el-checkbox label="TPS" name="type"></el-checkbox>
               <el-checkbox label="PZL" name="type"></el-checkbox>
               <el-checkbox label="CAG" name="type"></el-checkbox>
-                          <div>
-              <el-checkbox label="R18" name="type"></el-checkbox>
-              <el-checkbox label="3D" name="type"></el-checkbox>
-            </div>
+              <div>
+                <el-checkbox label="R18" name="type"></el-checkbox>
+                <el-checkbox label="3D" name="type"></el-checkbox>
+                <el-checkbox label="GalGame" name="type"></el-checkbox>
+              </div>
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="标题图片">
@@ -77,10 +78,10 @@
 
           <el-form-item label="游戏状态">
             <div>
-                <el-select v-model="game.state" placeholder="请选择">
-              <el-option label="上架" :value="1"></el-option>
-              <el-option label="审核" :value="0"></el-option>
-            </el-select>
+              <el-select v-model="game.state" placeholder="请选择">
+                <el-option label="上架" :value="1"></el-option>
+                <el-option label="审核" :value="0"></el-option>
+              </el-select>
             </div>
           </el-form-item>
           <el-form-item label="游戏介绍">
@@ -142,7 +143,6 @@ export default {
       }
     },
     handleDelete(g) {
-        
       axios
         .post(HOST + "/delGame/" + g.id)
         .then(res => {
@@ -153,10 +153,10 @@ export default {
         })
         .catch(() => {});
     },
-    update(game){
-         this.game.label = JSON.stringify(this.game.label);
-         axios
-        .post(HOST + "/updateGame",game)
+    update(game) {
+      this.game.label = JSON.stringify(this.game.label);
+      axios
+        .post(HOST + "/updateGame", game)
         .then(res => {
           this.$message(res.data.msg);
           setTimeout(() => {

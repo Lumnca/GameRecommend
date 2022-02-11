@@ -1,10 +1,7 @@
 <template>
   <div>
-    <grid :cols="2">
-      <grid-item  v-for="g in games" :key="g.id" :label="g.name" :link="{path:'/game',query:{game:g}}">
-        <img slot="icon" :src="g.imgUrl" width="200" height="80" />
-      </grid-item>
-    </grid>
+    <panel :list="games" type="1"></panel>
+
     <grid></grid>
   </div>
 </template>
@@ -18,7 +15,9 @@ import {
   Cell,
   Tabbar,
   TabbarItem,
-  XHeader
+  XHeader,
+  Radio,
+  Panel
 } from "vux";
 export default {
   name: "games",
@@ -30,7 +29,9 @@ export default {
     TabbarItem,
     XHeader,
     GridItem,
-    GroupTitle
+    GroupTitle,
+    Radio,
+    Panel
   },
   data() {
     return {
@@ -38,7 +39,8 @@ export default {
       // with hot-reload because the reloaded component
       // preserves its current state and we are modifying
       // its initial state.
-      games : []
+      games: [],
+      list: []
     };
   },
   methods: {
@@ -48,7 +50,19 @@ export default {
   },
   created() {
     this.$http.get("http://47.106.254.86:8868/getGames").then(({ data }) => {
-      this.games = data;
+      this.games = [];
+      data.forEach(e => {
+        this.games.push({
+          src: e.imgUrl,
+          title: e.name,
+          desc:
+            e.info,
+          url: {
+            path: "/game",
+            query: {game:e}
+          }
+        });
+      });
     });
   }
 };

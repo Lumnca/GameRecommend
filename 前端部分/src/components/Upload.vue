@@ -41,6 +41,7 @@
             <div>
               <el-checkbox label="R18" name="type"></el-checkbox>
               <el-checkbox label="3D" name="type"></el-checkbox>
+               <el-checkbox label="GalGame" name="type"></el-checkbox>
             </div>
           </el-checkbox-group>
         </el-form-item>

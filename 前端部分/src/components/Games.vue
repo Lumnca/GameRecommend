@@ -36,7 +36,7 @@
             </el-select>
           </el-col>
           <el-col :span="4">
-            <el-select v-model="value3" placeholder="大小限制">
+            <el-select v-model="value3" placeholder="游戏分类">
               <el-option
                 v-for="item in options3"
                 :key="item.value"
@@ -75,8 +75,12 @@
                       :span="8"
                       style="color:#330033"
                     >大小: {{o.size>1000? Math.floor(o.size/1000) + 'G':o.size + 'M'}} </el-col>
-                    <el-col :span="8"></el-col>
-                    <el-col :span="8" style="color:#909399;text-algin:right;">{{dateTranslate(o.date)}} </el-col>
+                    <el-col :span="4"></el-col>
+                    <el-col :span="12" style="color:#909399;">
+                        <div>{{dateTranslate(o.date)}}  <el-divider direction="vertical"></el-divider>
+                         <i class="el-icon-star-off"></i>
+                    ({{o.good}})</div>
+                       </el-col>
                   </el-row>
                 </div>
               </el-card>
@@ -255,16 +259,12 @@ export default {
           label: "全部"
         },
         {
-          value: 1,
+          value: 2,
           label: "安卓"
         },
         {
-          value: 2,
+          value: 1,
           label: "PC"
-        },
-        {
-          value: 3,
-          label: "IOS"
         }
       ],
       options3: [
@@ -282,11 +282,12 @@ export default {
         }
       ],
       value: "",
-      value2: "",
+      value2: 0,
       value3: "",
       input2: "",
       games: [],
-      game: {}
+      game: {},
+      origin:[]
     };
   },
   created() {
@@ -294,7 +295,7 @@ export default {
       .get(HOST + "/getGames")
       .then(res => {
         this.games = res.data;
-        console.log(this.games);
+        this.origin = [...res.data];
       })
       .catch(() => {});
   },
@@ -317,16 +318,22 @@ export default {
         this.games.sort((a, b) => {
           return (a.size - b.size) * (this.sortV ? 1 : -1);
         });
-      } else {
+      } else if (this.value === 3) {
         this.games.sort((a, b) => {
           return (a.good - b.good) * (this.sortV ? 1 : -1);
         });
       }
     },
     devSelect() {
-      this.games.forEach(e => {
-        if (this.value2 === 0) e.hidden = false;
-        if (e.devType == this.value2) e.hidden = true;
+      if(this.value2 === 0){
+         this.games = [...this.origin];
+        return;
+      }
+      this.games = [];
+      this.origin.forEach(e => {
+        if(e.devType === this.value2 || e.devType === 3){
+          this.games.push(e);
+        }
       });
     },
     itemClick(item) {

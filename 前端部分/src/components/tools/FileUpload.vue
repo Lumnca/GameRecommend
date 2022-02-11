@@ -33,7 +33,7 @@ export default {
   },
   data() {
     return {
-      fileUploadAddr: "http://127.0.0.1:8868/uploadimg",
+      fileUploadAddr: "http://117.50.175.19:8868/uploadimg",
       fileList: [],
       imgs: [],
       filename: ""

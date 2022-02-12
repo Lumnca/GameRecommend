@@ -1,11 +1,6 @@
 <template>
   <div>
-    <swiper auto  :interval="1000" class="text-scroll" :show-dots="false">
-      <swiper-item v-for="item in JSON.parse(game.imgs)" :key="item">
-        <x-img :src="item" ></x-img>
-      </swiper-item>
-    </swiper>
-
+    <swiper auto :interval="1000" :list="gameImgs" class="text-scroll" :show-dots="false"></swiper>
     <div>
       <group>
         <cell title="名称" :value="game.name"></cell>
@@ -62,20 +57,27 @@ export default {
       game: {
         name: "nn"
       },
-      devs: ["[安卓]", "[PC]", "[IOS]", "[安卓][PC]"]
+      devs: ["[安卓]", "[PC]", "[IOS]", "[安卓][PC]"],
+      gameImgs: []
     };
   },
   methods: {
     dateFormat(data, s) {
       return dateFormat(data, s);
     },
-    imgChilk(item){
-      console.log(item)
+    imgChilk(item) {
+      console.log(item);
     }
   },
   created() {
-    console.log(this.$route.query.game);
     this.game = this.$route.query.game;
+    let imgs = JSON.parse(this.game.imgs);
+    imgs.forEach(e => {
+      this.gameImgs.push({
+        url: "javascript:",
+        img: e
+      });
+    });
   }
 };
 </script>

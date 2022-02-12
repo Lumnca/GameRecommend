@@ -2,7 +2,7 @@
   <div id="app">
     <x-header >{{headerMsg}}</x-header>
     <router-view></router-view>
-    <tabbar>
+    <tabbar style="position: fixed;">
       <tabbar-item v-for="item in tabs" :key="item.key" @on-item-click="changeItem(item)" :link="item.path">
         <img slot="icon" :src="item.icon" />
         <span slot="label">{{item.name}}</span>
@@ -73,5 +73,6 @@ function iswap() {
 
 body {
   background-color: #fbf9fe;
+
 }
 </style>

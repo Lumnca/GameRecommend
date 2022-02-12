@@ -1,4 +1,4 @@
-const HOST = 'http://127.0.0.1:8868';
+const HOST = 'http://117.50.175.19:8868';
 axios
 .post(HOST + "/vadd")
 .then(res => {

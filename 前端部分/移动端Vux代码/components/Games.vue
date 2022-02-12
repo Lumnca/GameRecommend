@@ -1,8 +1,27 @@
 <template>
-  <div>
-    <panel :list="games" type="1"></panel>
-
-    <grid></grid>
+  <div class="gs">
+    <divider>游戏列表</divider>
+    <flexbox orient="vertical">
+      <flexbox-item class="game-item" v-for="game in games" :key="game.id">
+        <div class="flex-demo" @click="gameItemClick(game)">
+          <flexbox>
+            <flexbox-item :span="4">
+              <div class="flex-demo">
+                <img :src="game.imgUrl" width="120" height="80" />
+              </div>
+            </flexbox-item>
+            <flexbox-item>
+              <div class="flex-demo">
+                <h4>{{game.name}}</h4>
+                <div>类型:{{game.label}}</div>
+                <div>平台:{{devs[game.devType]}}</div>
+              </div>
+            </flexbox-item>
+          </flexbox>
+        </div>
+        <divider>-</divider>
+      </flexbox-item>
+    </flexbox>
   </div>
 </template>
 
@@ -17,7 +36,10 @@ import {
   TabbarItem,
   XHeader,
   Radio,
-  Panel
+  Panel,
+  Flexbox,
+  FlexboxItem,
+  Divider
 } from "vux";
 export default {
   name: "games",
@@ -31,7 +53,10 @@ export default {
     GridItem,
     GroupTitle,
     Radio,
-    Panel
+    Panel,
+    Flexbox,
+    FlexboxItem,
+    Divider
   },
   data() {
     return {
@@ -40,29 +65,27 @@ export default {
       // preserves its current state and we are modifying
       // its initial state.
       games: [],
-      list: []
+      list: [],
+      devs: ["[安卓]", "[PC]", "[IOS]", "[安卓][PC]"]
     };
   },
   methods: {
     onItemClick() {
       console.log("on item click");
+    },
+    gameItemClick(game) {
+      this.$router.push({
+        path: "/game", //跳转的路径
+        query: {
+          //路由传参时push和query搭配使用 ，作用时传递参数
+          game:game
+        }
+      });
     }
   },
   created() {
     this.$http.get("http://47.106.254.86:8868/getGames").then(({ data }) => {
-      this.games = [];
-      data.forEach(e => {
-        this.games.push({
-          src: e.imgUrl,
-          title: e.name,
-          desc:
-            e.info,
-          url: {
-            path: "/game",
-            query: {game:e}
-          }
-        });
-      });
+      this.games = data;
     });
   }
 };
@@ -75,5 +98,15 @@ export default {
 .logo {
   width: 100px;
   height: 100px;
+}
+.gs {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.flex-demo {
+  height: 84px;
+}
+.game-item {
+  padding: 0px;
 }
 </style>

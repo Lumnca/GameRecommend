@@ -64,23 +64,25 @@
                   <div>
                     <strong>{{o.name}}{{devType[o.devType]}}</strong>
                   </div>
-                  <div style="margin-top:4px;margin-bottom:4px;"  class="glabel">
-                    <span v-for="ic in JSON.parse(o.label)"  :key="ic">
-                       <el-tag size="small" >{{ic}}</el-tag>
+                  <div style="margin-top:4px;margin-bottom:4px;" class="glabel">
+                    <span v-for="ic in JSON.parse(o.label)" :key="ic">
+                      <el-tag size="small">{{ic}}</el-tag>
                     </span>
-                    
                   </div>
                   <el-row :gutter="20">
                     <el-col
                       :span="8"
                       style="color:#330033"
-                    >大小: {{o.size>1000? Math.floor(o.size/1000) + 'G':o.size + 'M'}} </el-col>
+                    >大小: {{o.size>1000? Math.floor(o.size/1000) + 'G':o.size + 'M'}}</el-col>
                     <el-col :span="4"></el-col>
                     <el-col :span="12" style="color:#909399;">
-                        <div>{{dateTranslate(o.date)}}  <el-divider direction="vertical"></el-divider>
-                         <i class="el-icon-star-off"></i>
-                    ({{o.good}})</div>
-                       </el-col>
+                      <div>
+                        {{dateTranslate(o.date)}}
+                        <el-divider direction="vertical"></el-divider>
+                        <i class="el-icon-star-off"></i>
+                        ({{o.good}})
+                      </div>
+                    </el-col>
                   </el-row>
                 </div>
               </el-card>
@@ -96,7 +98,13 @@
             <el-col :span="8">
               <div class="grid-content bg-purple">
                 <div style="margin:auto;">
-                  <el-pagination background layout="prev, pager, next" :total="games.length"></el-pagination>
+                  <el-pagination
+                    backgroun
+                    @current-change="handleCurrentChange"
+                    layout="prev, pager, next"
+                    :page-size="8"
+                    :total="origin.length"
+                  ></el-pagination>
                 </div>
               </div>
             </el-col>
@@ -129,11 +137,16 @@
                     <el-tag>{{el}}</el-tag>&nbsp;
                   </span>
                 </h2>
-                <span>上传者: Lumnca    <el-divider direction="vertical"></el-divider>
-                 {{dateTranslate(game.date)}} 
-                    <el-divider direction="vertical"></el-divider><el-button type="text" @click="goodAdd()"> <i class="el-icon-star-off"></i></el-button>
-                    ({{game.good}})</span>
-
+                <span>
+                  上传者: Lumnca
+                  <el-divider direction="vertical"></el-divider>
+                  {{dateTranslate(game.date)}}
+                  <el-divider direction="vertical"></el-divider>
+                  <el-button type="text" @click="goodAdd()">
+                    <i class="el-icon-star-off"></i>
+                  </el-button>
+                  ({{game.good}})
+                </span>
               </div>
               <el-divider></el-divider>
               <img :src="game.imgUrl" width="480" height="320" />
@@ -149,7 +162,6 @@
                           <el-image
                             style="width: 1080px; height: 640px"
                             :src="item"
-                            :preview-src-list="srcList"
                           ></el-image>
                         </div>
                       </div>
@@ -196,7 +208,7 @@
 </template>
 <style scoped>
 .gs .el-card {
-    --el-card-padding: 0px !important;
+  --el-card-padding: 0px !important;
 }
 h2 {
   color: #78b0dd;
@@ -208,10 +220,10 @@ h2 {
   margin: 12px;
   font-size: 14px;
 }
-.glabel :not(:first-child){
+.glabel :not(:first-child) {
   margin-left: 4px;
 }
-.game-item   img{
+.game-item img {
   width: 100%;
   height: 240px;
 }
@@ -287,14 +299,14 @@ export default {
       input2: "",
       games: [],
       game: {},
-      origin:[]
+      origin: [],
+      curPageIndex : 1
     };
   },
   created() {
     axios
       .get(HOST + "/getGames")
       .then(res => {
-        this.games = res.data;
         this.origin = [...res.data];
       })
       .catch(() => {});
@@ -302,36 +314,37 @@ export default {
   methods: {
     dSort() {
       if (this.sortV) {
-        //console.log(editor.txt.html());
-        console.log(this.games.reverse());
+        console.log(this.origin.reverse());
+        
       }
     },
     sort() {
       if (this.value === 1) {
-        this.games.sort((a, b) => {
+        this.origin.sort((a, b) => {
           return (
             (new Date(a.date).getTime() - new Date(b.date).getTime()) *
             (this.sortV ? 1 : -1)
           );
         });
       } else if (this.value === 2) {
-        this.games.sort((a, b) => {
+        this.origin.sort((a, b) => {
           return (a.size - b.size) * (this.sortV ? 1 : -1);
         });
       } else if (this.value === 3) {
-        this.games.sort((a, b) => {
+        this.origin.sort((a, b) => {
           return (a.good - b.good) * (this.sortV ? 1 : -1);
         });
       }
+      this.changePageData();
     },
     devSelect() {
-      if(this.value2 === 0){
-         this.games = [...this.origin];
+      if (this.value2 === 0) {
+        this.changePageData();
         return;
       }
       this.games = [];
       this.origin.forEach(e => {
-        if(e.devType === this.value2 || e.devType === 3){
+        if (e.devType === this.value2 || e.devType === 3) {
           this.games.push(e);
         }
       });
@@ -345,24 +358,33 @@ export default {
       let d = new Date(date);
       return d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate();
     },
-    goodAdd(){
-      this.game.good+=1;
-      if(window.localStorage.getItem('#'+this.game.id)==new Date().getDate()){
-        this.$message('今日该游戏已经点赞了！');
+    goodAdd() {
+      this.game.good += 1;
+      if (
+        window.localStorage.getItem("#" + this.game.id) == new Date().getDate()
+      ) {
+        this.$message("今日该游戏已经点赞了！");
+      } else {
+        axios
+          .post(HOST + "/addGood/" + this.game.id)
+          .then(res => {
+            console.log(res.data);
+            this.$message({
+              message: "点赞成功！",
+              type: "success"
+            });
+          })
+          .catch(() => {});
+
+        window.localStorage.setItem("#" + this.game.id, new Date().getDate());
       }
-      else{
-      axios.post(HOST + "/addGood/"+this.game.id)
-      .then(res => {
-        console.log(res.data);
-          this.$message({
-            message: '点赞成功！',
-            type: 'success'
-        });
-      })
-      .catch(() => {});
-      
-        window.localStorage.setItem('#'+this.game.id,new Date().getDate())
-      }
+    },
+    handleCurrentChange(val) {
+      this.changePageData();
+      this.curPageIndex = val;
+    },
+    changePageData(){
+        this.games = this.origin.slice((this.curPageIndex - 1) * 8, (this.curPageIndex) * 8 );
     }
   }
 };

@@ -105,7 +105,9 @@
                     :page-size="8"
                     :total="origin.length"
                   ></el-pagination>
+                 
                 </div>
+
               </div>
             </el-col>
             <el-col :span="8">
@@ -273,7 +275,6 @@ export default {
           game: JSON.stringify(item)
         }
       });
-      console.log(item);
     },
     dateTranslate(date) {
       let d = new Date(date);

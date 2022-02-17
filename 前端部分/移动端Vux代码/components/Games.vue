@@ -34,8 +34,6 @@
 
 <script>
 import { dateFormat } from 'vux'
-
-
 import {
   Grid,
   GridItem,
@@ -97,7 +95,7 @@ export default {
     }
   },
   created() {
-    this.$http.get("http://47.106.254.86:8868/getGames").then(({ data }) => {
+    this.$http.get("http://117.50.175.19:8868/getGames").then(({ data }) => {
       this.games = data;
     });
   }
@@ -133,6 +131,5 @@ export default {
   font-size: 12px;
 }
 .icon{
-
 }
 </style>

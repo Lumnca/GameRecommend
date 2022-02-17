@@ -18,7 +18,6 @@
 .info {
   padding: 16px;
   overflow: scroll;
-
   height: 240px;
 }
 </style>
@@ -34,7 +33,6 @@ import {
   SwiperItem
 } from "vux";
 import { dateFormat } from "vux";
-
 export default {
   name: "game",
   props: {},

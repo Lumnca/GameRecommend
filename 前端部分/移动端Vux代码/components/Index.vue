@@ -28,7 +28,7 @@ export default {
   },
   methods: {},
   created() {
-    this.$http.get("http://47.106.254.86:8868/getNotices").then(({ data }) => {
+    this.$http.get("http://117.50.175.19:8868/getNotices").then(({ data }) => {
       this.notices = data;
     });
   }

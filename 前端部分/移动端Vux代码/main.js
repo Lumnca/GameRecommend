@@ -9,6 +9,9 @@ import Games from './components/Games'
 import Game from './components/Game'
 import Talk from './components/Talk'
 import User from './components/User'
+import Registered from './components/Registered'
+import UserInfo from './components/UserInfo'
+import Login from './components/Login'
 import { AjaxPlugin } from 'vux'
 Vue.use(AjaxPlugin)
 Vue.use(VueRouter)
@@ -31,8 +34,24 @@ const routes = [{
 },
 {
   path: '/user',
-  component: User
-}]
+  component: User,
+  children: [
+    {
+      path: 'myself',
+      name:'myself',
+      component: UserInfo,
+    },
+    {
+      path: '',
+      name:'',
+      component: Login,
+    }
+  ]
+},
+{
+  path: '/registered',
+  component: Registered
+}];
 
 const router = new VueRouter({
   routes

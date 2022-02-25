@@ -32,7 +32,7 @@ export default {
         {name:'主页',icon:'src/assets/icons/index.svg',key:0,path:'/'},
         {name:'游戏',icon:'src/assets/icons/game.svg',key:1,path:'/games'},
         {name:'谈论',icon:'src/assets/icons/talk.svg',key:2,path:'/talk'},
-        {name:'用户',icon:'src/assets/icons/user.svg',key:3},
+        {name:'用户',icon:'src/assets/icons/user.svg',key:3,path:'/user'},
       ],
       msg: "Hello World!",
       headerMsg : ''

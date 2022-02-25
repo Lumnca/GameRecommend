@@ -1,30 +1,35 @@
 <template>
   <div>
-     暂未开放此功能
+      <router-view></router-view>
   </div>
 </template>
 
 <script>
-import { Group, Cell, Tabbar, TabbarItem,  XHeader } from "vux";
+import { Group, Cell, Tabbar, TabbarItem, XHeader, XInput, XButton } from "vux";
 export default {
   components: {
     Group,
     Cell,
     Tabbar,
     TabbarItem,
-     XHeader
+    XHeader,
+    XButton,
+    XInput
   },
   data() {
     return {
-      // note: changing this line won't causes changes
-      // with hot-reload because the reloaded component
-      // preserves its current state and we are modifying
-      // its initial state.
+      username:"",
+      password: ""
     };
   },
   methods: {
-
-  },
+    submit(){
+      console.log(this.username + "/"+ this.password)
+      this.$router.push({
+        path:'user/myself'
+      });
+    }
+  }
 };
 </script>
 
@@ -33,7 +38,9 @@ export default {
   text-align: center;
 }
 .logo {
-  width: 100px;
-  height: 100px;
+  padding: 16px 72px;
+}
+.login {
+  margin-top: 36%;
 }
 </style>

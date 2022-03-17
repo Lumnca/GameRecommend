@@ -95,6 +95,12 @@ export default {
           icon: "src/assets/icons/set.svg",
           size: 32,
           index:"manger"
+        },
+                {
+          name: "用 户",
+          icon: "src/assets/icons/user.svg",
+          size: 32,
+          index:"login"
         }
       ],
       type: "home",

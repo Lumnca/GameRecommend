@@ -8,10 +8,10 @@
           </flexbox-item>
           <flexbox-item :span="8">
             <div class="flex-demo">
-              <span>Name : Lumnca</span>
+              <span>姓名 : Lumnca</span>
             </div>
-            <div class="flex-demo">Age : 23</div>
-            <div class="flex-demo">DG : 2584</div>
+            <div class="flex-demo">地区 : Acop</div>
+            <div class="flex-demo">身份 : 剑士</div>
           </flexbox-item>
         </flexbox>
       </div>
@@ -20,37 +20,39 @@
       <div slot="content" class="card-demo-flex card-demo-content01">
         <div class="vux-1px-r">
           <span>1130</span>
-          <br />Item1
-        </div>
-        <div class="vux-1px-r">
-          <span>15</span>
-          <br />Item2
+          <br />金币
         </div>
         <div class="vux-1px-r">
           <span>0</span>
-          <br />Item3
+          <br />好友
+        </div>
+        <div class="vux-1px-r">
+          <span>0</span>
+          <br />卡片
         </div>
         <div>
-          <span>88</span>
-          <br />Item4
+          <span>0</span>
+          <br />收藏
         </div>
       </div>
     </card>
     <card>
-      <p slot="content" class="card-padding">Tiele</p>
+      <p slot="content" class="card-padding">
+        <a href="#">进入耶特兰特</a>
+      </p>
     </card>
     <card>
       <div slot="content" class="card-padding">
-        <p style="color:#999;font-size:12px;">Posted on January 21, 2015</p>
+        <p style="color:#999;font-size:12px;">个人简介</p>
         <p
-          style="font-size:14px;line-height:1.2;"
-        >Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non felis. Phasellus quis nibh hendrerit..</p>
-        <group>
-          <cell title="名称" value="Item"></cell>
-          <cell title="日期" value="Item"></cell>
-          <cell title="大小" value="Item"></cell>
-          <cell title="类型" value="Item"></cell>
-        </group>
+          style="font-size:14px;line-height:1.2;">
+           暂无介绍
+           >
+           >
+           >
+           >
+          </p>
+       
       </div>
     </card>
   </div>

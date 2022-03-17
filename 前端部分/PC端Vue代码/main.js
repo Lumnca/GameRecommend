@@ -9,6 +9,7 @@ import Games from './components/Games.vue'
 import Game from './components/Game.vue'
 import Table from './components/Table.vue'
 import Upload from './components/Upload.vue'
+import Login from './components/Login.vue'
 const routes = [
     {path:'/',name:'',component:HelloWorld},
     {path:'/home',name:'home', component:Home},
@@ -16,6 +17,7 @@ const routes = [
     {path:'/game',name:'game', component:Game},
     {path:'/manger',name:'manger', component:Table},
     {path:'/upload',name:'upload', component:Upload},
+    {path:'/login',name:'login', component:Login},
 ]
 const router = createRouter({
     history:createWebHashHistory(),
